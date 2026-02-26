@@ -1,0 +1,114 @@
+.logo-loop-section {
+    padding: 4rem 0;
+    overflow: hidden;
+    position: relative;
+    user-select: none;
+    background: transparent;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    margin: 2rem 0;
+}
+
+.parallax {
+    overflow: hidden;
+    line-height: 1;
+    margin: 0;
+    white-space: nowrap;
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 0.5rem 0;
+}
+
+.scroller {
+    display: flex;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+}
+
+.scroller-inner {
+    display: flex;
+    align-items: center;
+}
+
+.loop-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.8rem 2.5rem;
+    color: var(--text-color);
+    opacity: 0.4;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    filter: grayscale(1);
+}
+
+.loop-item:hover {
+    opacity: 1;
+    filter: grayscale(0);
+    transform: translateY(-2px);
+}
+
+.tool-icon {
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tool-name {
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: var(--sans);
+}
+
+/* Track styling variation */
+.parallax:nth-child(2) {
+    margin-top: 0.5rem;
+}
+
+.parallax:nth-child(2) .loop-item {
+    opacity: 0.25;
+}
+
+/* Edge Fade Effect */
+.logo-loop-section::before,
+.logo-loop-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 20%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.logo-loop-section::before {
+    left: 0;
+    background: linear-gradient(to right, #050505 0%, transparent 100%);
+}
+
+.logo-loop-section::after {
+    right: 0;
+    background: linear-gradient(to left, #050505 0%, transparent 100%);
+}
+
+/* Fix for mobile responsiveness */
+@media (max-width: 768px) {
+    .logo-loop-section {
+        padding: 2rem 0;
+    }
+
+    .tool-icon {
+        font-size: 1.4rem;
+    }
+
+    .tool-name {
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+    }
+
+    .loop-item {
+        padding: 0.5rem 1.5rem;
+    }
+}

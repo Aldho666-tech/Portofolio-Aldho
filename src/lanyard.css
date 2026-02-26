@@ -1,0 +1,28 @@
+.lanyard-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.lanyard-wrapper canvas {
+    pointer-events: auto !important;
+}
+
+@media (max-width: 1024px) {
+    .lanyard-wrapper {
+        width: 100%;
+        height: 50%;
+        top: auto;
+        bottom: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .lanyard-wrapper {
+        display: none;
+    }
+}
