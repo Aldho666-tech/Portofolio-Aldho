@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Code2, Palette, Film, Sparkles, User, Download, MapPin } from 'lucide-react';
 import LogoLoop from '../components/logoloop';
+import ProfileCard from '../components/profilecard';
 
 const Lanyard = lazy(() => import('../components/Lanyard'));
 
@@ -211,25 +212,17 @@ export default function Home() {
                     >
                         {/* Left — Photo card */}
                         <motion.div variants={scaleIn} className="about-photo-col">
-                            <div className="about-photo-card">
-                                <div className="about-photo-frame">
-                                    <img
-                                        src="/profile.jpg"
-                                        alt="Aldho Lega Dharmawan"
-                                        className="about-photo"
-                                        onError={(e) => {
-                                            e.target.style.display = 'none';
-                                            e.target.nextSibling.style.display = 'flex';
-                                        }}
-                                    />
-                                    <div className="about-photo-fallback" style={{ display: 'none' }}>
-                                        <User size={64} color="rgba(255,255,255,0.2)" />
-                                    </div>
-                                </div>
-                                <div className="about-photo-badge">
-                                    <MapPin size={14} />
-                                    <span>Tangerang, Indonesia</span>
-                                </div>
+                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                <ProfileCard
+                                    name="ALDHO LEGA"
+                                    title="Software Engineer"
+                                    avatarUrl="/foto.png"
+                                    showUserInfo={false}
+                                    enableTilt={true}
+                                    behindGlowColor="rgba(40, 60, 255, 0.6)"
+                                    innerGradient="linear-gradient(180deg, rgba(20, 25, 45, 0.9) 0%, rgba(10, 12, 25, 0.95) 100%)"
+                                    iconUrl="/logo.png"
+                                />
                             </div>
                         </motion.div>
 
