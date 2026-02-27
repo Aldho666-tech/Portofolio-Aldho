@@ -14,7 +14,18 @@ const graphicImages = [
     { title: 'Minimalist Branding', year: '2024', url: 'https://images.unsplash.com/photo-1618585934665-27663e804f85?q=80&w=2070&auto=format&fit=crop' },
     { title: 'Abstract Geometry', year: '2023', url: 'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=2070&auto=format&fit=crop' },
     { title: 'Digital Synthesis', year: '2024', url: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop' },
-    { title: 'Vibrant Identity', year: '2023', url: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=2070&auto=format&fit=crop' }
+    { title: 'Vibrant Identity', year: '2023', url: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=2070&auto=format&fit=crop' },
+    { title: 'Brand', year: '2025', url: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=2070&auto=format&fit=crop' },
+    { title: 'Geometric Landscapes', year: '2024', url: 'https://images.unsplash.com/photo-1550684376-efcbd6e3f031?q=80&w=2070&auto=format&fit=crop' },
+    { title: 'Neon Nights', year: '2023', url: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=2070&auto=format&fit=crop' },
+    { title: 'Brutalist Space', year: '2024', url: 'https://images.unsplash.com/photo-1601362840469-51e4d8d58785?q=80&w=2072&auto=format&fit=crop' },
+    { title: 'Modern Typography', year: '2022', url: 'https://images.unsplash.com/photo-1552083165-276662e7f338?q=80&w=2069&auto=format&fit=crop' },
+    { title: 'Flowing Liquids', year: '2024', url: 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=2000&auto=format&fit=crop' },
+    { title: 'Optical Illusion', year: '2023', url: 'https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=2070&auto=format&fit=crop' },
+    { title: 'Gradient Dreams', year: '2024', url: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2070&auto=format&fit=crop' },
+    { title: 'Aura Blur', year: '2025', url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop' },
+    { title: 'Holographic Foil', year: '2023', url: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=2070&auto=format&fit=crop' },
+    { title: 'Retro Futurism', year: '2024', url: 'https://images.unsplash.com/photo-1618172193622-ae2d025f4032?q=80&w=2000&auto=format&fit=crop' }
 ];
 
 const projects = {
@@ -72,7 +83,6 @@ function ProjectCard({ project, isVideo }) {
             variants={fadeIn}
             className="project-card"
             whileHover="hover"
-            initial="initial"
         >
             <div className="project-image-container">
                 {isVideo ? (
@@ -86,11 +96,11 @@ function ProjectCard({ project, isVideo }) {
                 )}
                 <motion.div
                     className="project-overlay"
-                    variants={{ initial: { opacity: 0 }, hover: { opacity: 1 } }}
+                    variants={{ hidden: { opacity: 0 }, visible: { opacity: 0 }, hover: { opacity: 1 } }}
                     transition={{ duration: 0.3 }}
                 >
                     <a href={project.link} className="btn-icon">
-                        <ExternalLink size={22} color="var(--bg-color)" />
+                        <ExternalLink size={22} color="var(--bg)" />
                     </a>
                 </motion.div>
             </div>

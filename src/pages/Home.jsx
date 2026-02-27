@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Code2, Palette, Film, Sparkles } from 'lucide-react';
+import { ArrowRight, Code2, Palette, Film, Sparkles, User, Download, MapPin } from 'lucide-react';
 import LogoLoop from '../components/logoloop';
 
 const Lanyard = lazy(() => import('../components/Lanyard'));
@@ -42,6 +42,54 @@ const skills = [
     { icon: <Film size={16} />, label: 'Video Editor' },
 ];
 
+function Typewriter({ words }) {
+    const [index, setIndex] = useState(0);
+    const [subIndex, setSubIndex] = useState(0);
+    const [blink, setBlink] = useState(true);
+    const [reverse, setReverse] = useState(false);
+
+    // Blinking cursor
+    useEffect(() => {
+        const timeout2 = setTimeout(() => setBlink(!blink), 500);
+        return () => clearTimeout(timeout2);
+    }, [blink]);
+
+    useEffect(() => {
+        if (subIndex === words[index].length + 1 && !reverse) {
+            const timeout = setTimeout(() => setReverse(true), 1500);
+            return () => clearTimeout(timeout);
+        }
+
+        if (subIndex === 0 && reverse) {
+            setReverse(false);
+            setIndex((prev) => (prev + 1) % words.length);
+            return;
+        }
+
+        const timeout = setTimeout(() => {
+            setSubIndex((prev) => prev + (reverse ? -1 : 1));
+        }, Math.max(reverse ? 50 : 100, parseInt(Math.random() * 50)));
+
+        return () => clearTimeout(timeout);
+    }, [subIndex, index, reverse, words]);
+
+    return (
+        <span className="typewriter-text outline-text" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', display: 'block', marginTop: '0.5rem' }}>
+            {words[index].substring(0, subIndex)}
+            <span style={{
+                display: 'inline-block',
+                width: '4px',
+                height: '1em',
+                backgroundColor: 'var(--accent)',
+                marginLeft: '6px',
+                verticalAlign: 'text-bottom',
+                opacity: blink ? 1 : 0,
+                transition: 'opacity 0.1s'
+            }}></span>
+        </span>
+    );
+}
+
 export default function Home() {
     const [isMobile, setIsMobile] = useState(false);
 
@@ -51,6 +99,8 @@ export default function Home() {
         window.addEventListener('resize', check);
         return () => window.removeEventListener('resize', check);
     }, []);
+
+    const typeWords = ['I build websites.', 'I design brands.', 'I edit videos.'];
 
     return (
         <>
@@ -74,10 +124,9 @@ export default function Home() {
                         </motion.div>
 
                         <motion.div variants={fadeInLeft} className="hero-name-block">
-                            <span className="hero-greeting">Hi, I'm</span>
-                            <h1 className="hero-title">
-                                ALDHO<br />
-                                <span className="outline-text">LEGA DHARMAWAN.</span>
+                            <span className="hero-greeting">Hi, I'm ALDHO</span>
+                            <h1 className="hero-title" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', lineHeight: 1.2 }}>
+                                <Typewriter words={typeWords} />
                             </h1>
                         </motion.div>
 
@@ -149,6 +198,137 @@ export default function Home() {
             </section>
 
             <LogoLoop />
+
+            {/* ─── About Me Section ─── */}
+            <section id="about" className="page-section about-section">
+                <div className="container">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: '-100px' }}
+                        variants={stagger}
+                        className="about-grid"
+                    >
+                        {/* Left — Photo card */}
+                        <motion.div variants={scaleIn} className="about-photo-col">
+                            <div className="about-photo-card">
+                                <div className="about-photo-frame">
+                                    <img
+                                        src="/profile.jpg"
+                                        alt="Aldho Lega Dharmawan"
+                                        className="about-photo"
+                                        onError={(e) => {
+                                            e.target.style.display = 'none';
+                                            e.target.nextSibling.style.display = 'flex';
+                                        }}
+                                    />
+                                    <div className="about-photo-fallback" style={{ display: 'none' }}>
+                                        <User size={64} color="rgba(255,255,255,0.2)" />
+                                    </div>
+                                </div>
+                                <div className="about-photo-badge">
+                                    <MapPin size={14} />
+                                    <span>Tangerang, Indonesia</span>
+                                </div>
+                            </div>
+                        </motion.div>
+
+                        {/* Right — Content */}
+                        <motion.div variants={fadeIn} className="about-content-col">
+                            <motion.p variants={fadeIn} className="subtitle">Who I Am</motion.p>
+                            <motion.h2 variants={fadeIn} className="section-title" style={{ marginBottom: '1.5rem' }}>
+                                About <span className="accent-text">Me</span>
+                            </motion.h2>
+
+                            <motion.p variants={fadeIn} className="about-bio">
+                                I'm <strong>Aldho Lega Dharmawan</strong>, a creative digital enthusiast from Tangerang.
+                                I specialize in <span className="accent-text">Web Development</span>,{' '}
+                                <span className="accent-text">Graphic Design</span>, and{' '}
+                                <span className="accent-text">Video Editing</span> — turning ideas into polished digital experiences.
+                            </motion.p>
+                            <motion.p variants={fadeIn} className="about-bio" style={{ marginTop: '1rem' }}>
+                                With 3+ years of hands-on experience, I enjoy crafting clean interfaces,
+                                bold visuals, and compelling motion stories that leave a lasting impression.
+                            </motion.p>
+
+                            {/* Skill bars */}
+                            <motion.div variants={fadeIn} className="about-skills">
+                                {[
+                                    { label: 'Web Development', pct: 85 },
+                                    { label: 'Graphic Design', pct: 90 },
+                                    { label: 'Video Editing', pct: 80 },
+                                ].map((s) => (
+                                    <div key={s.label} className="skill-bar-row">
+                                        <div className="skill-bar-label">
+                                            <span>{s.label}</span>
+                                            <span className="accent-text">{s.pct}%</span>
+                                        </div>
+                                        <div className="skill-bar-track">
+                                            <motion.div
+                                                className="skill-bar-fill"
+                                                initial={{ width: 0 }}
+                                                whileInView={{ width: `${s.pct}%` }}
+                                                viewport={{ once: true }}
+                                                transition={{ duration: 1.2, ease: 'easeOut', delay: 0.2 }}
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+                            </motion.div>
+
+                            <motion.div variants={fadeIn} className="about-actions">
+                                <motion.a
+                                    href="/contact"
+                                    className="btn primary-btn"
+                                    whileHover={{ scale: 1.03 }}
+                                    whileTap={{ scale: 0.97 }}
+                                >
+                                    Hire Me
+                                </motion.a>
+                                <motion.a
+                                    href="/cv.pdf"
+                                    download
+                                    className="btn ghost-btn"
+                                    whileHover={{ scale: 1.03 }}
+                                    whileTap={{ scale: 0.97 }}
+                                >
+                                    <Download size={16} /> Download CV
+                                </motion.a>
+                            </motion.div>
+                        </motion.div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* ─── Call To Action Section ─── */}
+            <section className="page-section cta-section" style={{ padding: '4rem 0 8rem' }}>
+                <div className="container">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: '-50px' }}
+                        variants={scaleIn}
+                        className="glass-card text-center"
+                        style={{ padding: 'clamp(2rem, 5vw, 4rem)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}
+                    >
+                        <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', color: '#fff' }}>
+                            Have a project in mind?
+                        </h2>
+                        <p style={{ color: 'var(--muted)', maxWidth: '500px', margin: '0 auto', fontSize: '1rem' }}>
+                            Whether you need a new website, a brand identity, or a video edit, I'm here to bring your vision to life.
+                        </p>
+                        <motion.a
+                            href="/contact"
+                            className="btn primary-btn"
+                            style={{ marginTop: '1rem', padding: '1rem 3rem', fontSize: '1.1rem' }}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                        >
+                            <Sparkles size={18} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'text-top' }} /> Let's Work Together
+                        </motion.a>
+                    </motion.div>
+                </div>
+            </section>
         </>
     );
 }
