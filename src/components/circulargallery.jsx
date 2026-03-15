@@ -3,12 +3,12 @@ import { motion } from 'framer-motion';
 
 export default function CircularGallery({ items = [] }) {
     const scrollRef = useRef(null);
+    const [isMobile, setIsMobile] = useState(false);
 
     // ── Mouse drag — desktop ──────────────────────────────
-    const [isDragging, setIsDragging] = useState(false);
-    const dragStartX = useRef(0);
-    const dragScrollLeft = useRef(0);
-    const [isMobile, setIsMobile] = useState(false);
+    const [isDown, setIsDown] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeft, setScrollLeft] = useState(0);
 
     useEffect(() => {
         const check = () => setIsMobile(window.innerWidth < 768);
@@ -19,33 +19,30 @@ export default function CircularGallery({ items = [] }) {
 
     const onMouseDown = (e) => {
         if (isMobile) return;
-        setIsDragging(true);
-        dragStartX.current = e.pageX;
-        dragScrollLeft.current = scrollRef.current.scrollLeft;
-        scrollRef.current.style.cursor = 'grabbing';
-    };
-    const onMouseUp = () => {
-        if (isMobile) return;
-        setIsDragging(false);
-        if (scrollRef.current) scrollRef.current.style.cursor = 'grab';
+        setIsDown(true);
+        setStartX(e.pageX - scrollRef.current.offsetLeft);
+        setScrollLeft(scrollRef.current.scrollLeft);
     };
     const onMouseLeave = () => {
         if (isMobile) return;
-        if (isDragging) {
-            setIsDragging(false);
-            if (scrollRef.current) scrollRef.current.style.cursor = 'grab';
-        }
+        setIsDown(false);
+    };
+    const onMouseUp = () => {
+        if (isMobile) return;
+        setIsDown(false);
     };
     const onMouseMove = (e) => {
-        if (!isDragging || isMobile) return;
+        if (!isDown || isMobile) return;
         e.preventDefault();
-        scrollRef.current.scrollLeft = dragScrollLeft.current - (e.pageX - dragStartX.current);
+        const x = e.pageX - scrollRef.current.offsetLeft;
+        const walk = (x - startX) * 2; // Scroll-fast mechanism
+        scrollRef.current.scrollLeft = scrollLeft - walk;
     };
 
     if (!items || items.length === 0) {
         return (
             <div style={{ padding: '3rem', textAlign: 'center', color: '#666', border: '1px dashed #333', borderRadius: '20px' }}>
-                Galeri kosong atau sedang dimuat...
+                Gallery empty or loading...
             </div>
         );
     }
@@ -57,7 +54,7 @@ export default function CircularGallery({ items = [] }) {
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseLeave}
             onMouseMove={onMouseMove}
-            className="circular-gallery-container"
+            className={`circular-gallery-container ${isDown ? 'active' : ''}`}
             style={{
                 width: '100%',
                 minHeight: isMobile ? 'auto' : '520px',
@@ -68,22 +65,28 @@ export default function CircularGallery({ items = [] }) {
                 padding: isMobile ? '1rem 0 2rem' : '3rem 0',
                 overflowX: 'auto',
                 overflowY: 'hidden',
-                WebkitOverflowScrolling: 'touch', // Explicitly enable native iOS smooth scrolling
+                WebkitOverflowScrolling: 'touch',
                 scrollbarWidth: 'none',
                 msOverflowStyle: 'none',
-                cursor: isMobile ? 'pan-x' : (isDragging ? 'grabbing' : 'grab'),
+                cursor: isMobile ? 'pan-x' : (isDown ? 'grabbing' : 'grab'),
                 scrollSnapType: isMobile ? 'x mandatory' : 'none',
                 pointerEvents: 'auto',
-                touchAction: 'pan-x' // Important for mobile browsers to allow horizontal scroll
+                touchAction: 'pan-x',
+                scrollBehavior: 'smooth'
             }}
         >
+            {/* hidden absolute scrollbar pseudo classes are handled in external css if needed, but we use inline trick here: */}
+            <style>{`
+                .circular-gallery-container::-webkit-scrollbar { display: none; }
+            `}</style>
+
             <div
                 className="circular-gallery-track"
                 style={{
                     display: 'flex',
                     gap: isMobile ? '1.5rem' : '2.5rem',
                     flexShrink: 0,
-                    padding: isMobile ? '0 5vw' : '0 10vw',
+                    padding: isMobile ? '0 5vw' : '0 5vw',
                 }}
             >
                 {items.map((item, i) => (
@@ -91,14 +94,14 @@ export default function CircularGallery({ items = [] }) {
                         key={i}
                         className="gallery-item-wrapper"
                         initial={{ opacity: 0, scale: 0.8, rotateY: i % 2 === 0 ? -15 : 15 }}
-                        whileInView={isMobile ? { opacity: 1, scale: 1 } : {
+                        whileInView={isMobile ? { opacity: 1, scale: 1, rotateY: 0 } : {
                             opacity: 1,
                             scale: 1,
                             rotateY: i % 2 === 0 ? -8 : 8,
                             transition: { duration: 0.8, ease: 'easeOut' }
                         }}
                         whileHover={isMobile ? undefined : "hover"}
-                        viewport={{ once: false, margin: '-50px' }}
+                        viewport={{ once: true, margin: '-50px' }}
                         style={{
                             flex: isMobile ? '0 0 260px' : '0 0 320px',
                             width: isMobile ? '260px' : '320px',
@@ -116,7 +119,7 @@ export default function CircularGallery({ items = [] }) {
                         }}
                     >
                         <motion.img
-                            src={item.url || item}
+                            src={item.image || item.url || item}
                             alt={item.title || `Design ${i + 1}`}
                             draggable={false}
                             variants={isMobile ? undefined : { hover: { scale: 1.05, filter: 'grayscale(0)' } }}
@@ -125,7 +128,7 @@ export default function CircularGallery({ items = [] }) {
                                 height: '100%',
                                 objectFit: 'cover',
                                 filter: isMobile ? 'grayscale(0)' : 'grayscale(0.5)',
-                                transition: 'filter 0.5s ease',
+                                transition: 'transform 0.5s ease, filter 0.5s ease',
                                 pointerEvents: 'none',
                             }}
                             onError={(e) => {
@@ -156,7 +159,7 @@ export default function CircularGallery({ items = [] }) {
                                 {item.title || 'Untitled Project'}
                             </h4>
                             <span style={{ color: 'var(--accent)', fontSize: '0.8rem', opacity: 0.8 }}>
-                                {item.year || '2024'}
+                                {item.tags ? item.tags.join(' • ') : (item.year || 'Graphic Art')}
                             </span>
                         </motion.div>
                     </motion.div>
@@ -165,7 +168,7 @@ export default function CircularGallery({ items = [] }) {
 
             <div style={{
                 position: 'absolute',
-                bottom: 5,
+                bottom: isMobile ? 5 : 15,
                 left: '50%',
                 transform: 'translateX(-50%)',
                 fontSize: '0.65rem',
