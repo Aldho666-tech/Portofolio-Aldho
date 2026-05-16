@@ -1,4 +1,5 @@
 import React, { Suspense, lazy, useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useTransform, useSpring, AnimatePresence, useInView } from 'framer-motion';
 import { ArrowRight, Code2, Palette, Film, Sparkles, User, Download, MapPin, X } from 'lucide-react';
 import LogoLoop from '../components/logoloop';
@@ -240,6 +241,9 @@ const videoCollection = [
 const webCollection = [
     { type: 'image', src: '/cmsschool-preview.png', link: 'https://cmsschooll.netlify.app/', platform: 'Website' },
     { type: 'image', src: '/raalfatin-preview.png', link: 'https://raalfatinn.netlify.app/', platform: 'Website' },
+    { type: 'image', src: '/glass & Gloww.png', link: 'https://glossandglow-alpha.vercel.app/#', platform: 'Website' },
+    { type: 'image', src: '/Triraksa Village 2.png', link: 'https://land.triraksavillage2.com/', platform: 'Website' },
+    { type: 'image', src: '/rizqy-preview.png', link: 'https://rizqytravel.netlify.app/', platform: 'Website' },
 ];
 
 const designCollection = [
@@ -416,14 +420,17 @@ export default function Home() {
                         </motion.div>
 
                         <motion.div variants={fadeIn} className="hero-actions">
-                            <motion.a
-                                href="/projects"
-                                className="btn primary-btn"
+                            <motion.div
                                 whileHover={{ scale: 1.06, boxShadow: '0 10px 30px rgba(255,255,255,0.2)' }}
                                 whileTap={{ scale: 0.95 }}
                             >
-                                See My Projects
-                            </motion.a>
+                                <Link
+                                    to="/projects"
+                                    className="btn primary-btn"
+                                >
+                                    See My Projects
+                                </Link>
+                            </motion.div>
                         </motion.div>
 
                         {/* Stats Row - Desktop Only */}
@@ -545,17 +552,20 @@ export default function Home() {
                             </motion.div>
 
                             <motion.div variants={fadeIn} className="about-actions">
-                                <motion.a
-                                    href="/contact"
-                                    className="btn primary-btn"
+                                <motion.div
                                     whileHover={{ scale: 1.03 }}
                                     whileTap={{ scale: 0.97 }}
                                 >
-                                    Hire Me
-                                </motion.a>
+                                    <Link
+                                        to="/contact"
+                                        className="btn primary-btn"
+                                    >
+                                        Hire Me
+                                    </Link>
+                                </motion.div>
                                 <motion.a
                                     href="/cv.pdf"
-                                    download
+                                    download="CV - ALDHO 2026.pdf"
                                     className="btn ghost-btn"
                                     whileHover={{ scale: 1.03 }}
                                     whileTap={{ scale: 0.97 }}
@@ -564,6 +574,38 @@ export default function Home() {
                                 </motion.a>
                             </motion.div>
                         </motion.div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* ─── Projects Collections Section ─── */}
+            <section className="collections-section">
+                <div className="container">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: '-100px' }}
+                        variants={stagger}
+                    >
+                        <motion.p variants={fadeIn} className="subtitle text-center">My Work</motion.p>
+                        <motion.h2 variants={fadeIn} className="section-title" style={{ marginBottom: '3rem' }}>
+                            Port<span className="accent-text">folio</span>
+                        </motion.h2>
+                        <ProjectCollection
+                            title="Video Editor"
+                            items={videoCollection}
+                            link="https://drive.google.com/drive/folders/1k74NUn8MW6Nbn7hwzw-kBqjUycZa50bz?usp=sharing"
+                        />
+                        <ProjectCollection
+                            title="Website"
+                            items={webCollection}
+                            link="#"
+                        />
+                        <ProjectCollection
+                            title="Design"
+                            items={designCollection}
+                            link="#"
+                        />
                     </motion.div>
                 </div>
             </section>
@@ -584,7 +626,7 @@ export default function Home() {
 
                         <div className="timeline">
                             {experiences.map((exp, i) => (
-                                <motion.div key={i} variants={fadeInLeft} className="timeline-item">
+                                <motion.div key={i} variants={fadeInLeft} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} className="timeline-item">
                                     <div className="timeline-dot" />
                                     <div className="timeline-content">
                                         <h3 className="timeline-company">{exp.company}</h3>
@@ -638,7 +680,7 @@ export default function Home() {
 
                         <div className="timeline">
                             {education.map((edu, i) => (
-                                <motion.div key={i} variants={fadeInLeft} className="timeline-item">
+                                <motion.div key={i} variants={fadeInLeft} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} className="timeline-item">
                                     <div className="timeline-dot" />
                                     <div className="timeline-content">
                                         <h3 className="timeline-company">{edu.school}</h3>
@@ -690,39 +732,7 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* ─── Projects Collections Section ─── */}
-            <section className="collections-section">
-                <div className="container">
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: '-100px' }}
-                        variants={stagger}
-                    >
-                        <motion.p variants={fadeIn} className="subtitle text-center">My Work</motion.p>
-                        <motion.h2 variants={fadeIn} className="section-title" style={{ marginBottom: '3rem' }}>
-                            Port<span className="accent-text">folio</span>
-                        </motion.h2>
-                        <ProjectCollection
-                            title="Video Editor"
-                            items={videoCollection}
-                            link="https://drive.google.com/drive/folders/1k74NUn8MW6Nbn7hwzw-kBqjUycZa50bz?usp=sharing"
-                        />
-                        <ProjectCollection
-                            title="Website"
-                            items={webCollection}
-                            link="#"
-                        />
-                        <ProjectCollection
-                            title="Design"
-                            items={designCollection}
-                            link="#"
-                        />
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* ─── Call To Action Section ─── */}
+                        {/* ─── Call To Action Section ─── */}
             <section className="page-section cta-section" style={{ padding: '4rem 0 8rem' }}>
                 <div className="container">
                     <motion.div
@@ -763,15 +773,18 @@ export default function Home() {
                             <p style={{ color: '#eaeaea', maxWidth: '550px', margin: '0 auto', fontSize: '1.05rem', textShadow: '0 2px 4px rgba(0,0,0,0.8)', fontWeight: 500 }}>
                                 Whether you need a new website, a brand identity, or a video edit, I'm here to bring your vision to life.
                             </p>
-                            <motion.a
-                                href="/contact"
-                                className="btn primary-btn"
-                                style={{ marginTop: '1rem', padding: '1rem 3rem', fontSize: '1.1rem', boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)' }}
+                            <motion.div
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
-                                <Sparkles size={18} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'text-top' }} /> Let's Work Together
-                            </motion.a>
+                                <Link
+                                    to="/contact"
+                                    className="btn primary-btn"
+                                    style={{ marginTop: '1rem', padding: '1rem 3rem', fontSize: '1.1rem', boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)' }}
+                                >
+                                    <Sparkles size={18} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'text-top' }} /> Let's Work Together
+                                </Link>
+                            </motion.div>
                         </div>
                     </motion.div>
                 </div>

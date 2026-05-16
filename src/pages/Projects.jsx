@@ -24,6 +24,27 @@ const projects = {
             image: '/raalfatin-preview.png',
             link: 'https://raalfatinn.netlify.app/',
             tags: ['React', 'Website']
+        },
+        {
+            id: 13, title: 'GlossGo & Wash', category: 'Web Development',
+            description: 'Modern landing page for car detailing services with high-quality animations.',
+            image: '/glass & Gloww.png',
+            link: 'https://glossandglow-alpha.vercel.app/#',
+            tags: ['React', 'Website']
+        },
+        {
+            id: 14, title: 'Triraksa Village 2', category: 'Web Development',
+            description: 'High-performance landing page for a real estate property.',
+            image: '/Triraksa Village 2.png',
+            link: 'https://land.triraksavillage2.com/',
+            tags: ['React', 'Next.js']
+        },
+        {
+            id: 15, title: 'Rizqy Travel', category: 'Web Development',
+            description: 'Professional travel and tour services website.',
+            image: '/rizqy-preview.png',
+            link: 'https://rizqytravel.netlify.app/',
+            tags: ['HTML', 'CSS', 'Website']
         }
     ],
     video: [

@@ -19,7 +19,8 @@ export default function Contact() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle form submission logic here
+
+        
         console.log("Form submitted:", formData);
         alert("Thanks for reaching out! This is a demo form.");
     };
